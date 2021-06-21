@@ -124,7 +124,7 @@ const Cost = () => {
                                         {cost.amount}€
                                     </td>
                                     <td>
-                                        {(cost.amount / (cost.iva / 100 + 1)).toFixed(2)}€
+                                        {cost.amountW.toFixed(2)}€
                                     </td>
                                     <td>
                                         {cost.iva}%
@@ -213,9 +213,12 @@ const Cost = () => {
                                                 </div>
                                             </div>
                                             :
-                                            <div className="col">
-                                                {staff.project1}
-                                            </div>}
+                                            <div className="row">
+                                                <div className="col">
+                                                    {staff.project1}
+                                                </div>
+                                            </div>
+                                        }
                                         {staff.project4 !== null
                                             ?
                                             <div className="row">

@@ -82,7 +82,7 @@ const ModalCommonCost = props => {
         }
         formData.append("imgs", id)
 
-        axios.post(api + "/upload_img",
+        axios.post(api + "/upload_update_img",
             formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'

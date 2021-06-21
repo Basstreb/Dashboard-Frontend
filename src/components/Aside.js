@@ -4,6 +4,7 @@ import { GoGraph } from 'react-icons/go'
 import { FiUsers } from 'react-icons/fi'
 import { MdLocalOffer } from 'react-icons/md'
 import { FaMoneyBillWave } from 'react-icons/fa';
+import { AiOutlinePercentage } from 'react-icons/ai';
 import '../styles/Aside.css'
 
 const Aside = () => {
@@ -13,13 +14,16 @@ const Aside = () => {
                 <div className="position-sticky pt-md-3">
                     <ul className="list-group list-group-horizontal justify-content-around">
                         <li className="nav-item list-group-item clean">
-                            <NavLink to="/dashboard/clients" className="btn">{<FiUsers />} Clientes</NavLink>
+                            <NavLink to="/dashboard/clients" className="btn mt-2">{<FiUsers />} Clientes</NavLink>
                         </li>
                         <li className="nav-item list-group-item clean">
                             <NavLink to="/dashboard/offers" className="btn mt-2">{<MdLocalOffer />} Ofertas</NavLink>
                         </li>
                         <li className="nav-item list-group-item clean">
                             <NavLink to="/dashboard/costs" className="btn mt-2">{<FaMoneyBillWave />} Gastos</NavLink>
+                        </li>
+                        <li className="nav-item list-group-item clean">
+                            <NavLink to="/dashboard/iva" className="btn mt-2">{<AiOutlinePercentage />} IVA</NavLink>
                         </li>
                         <li className="nav-item list-group-item clean">
                             <NavLink to="/dashboard/graphic" className="btn mt-2">{<GoGraph />} Gráficas</NavLink>
@@ -32,13 +36,16 @@ const Aside = () => {
                 <div className="position-sticky pt-md-3">
                     <ul className="nav flex-column">
                         <li className="nav-item">
-                            <NavLink to="/dashboard/clients" className="btn">{<FiUsers />} Clientes</NavLink>
+                            <NavLink to="/dashboard/clients" className="btn mt-2">{<FiUsers />} Clientes</NavLink>
                         </li>
                         <li className="nav-item">
                             <NavLink to="/dashboard/offers" className="btn mt-2">{<MdLocalOffer />} Ofertas</NavLink>
                         </li>
                         <li className="nav-item">
                             <NavLink to="/dashboard/costs" className="btn mt-2">{<FaMoneyBillWave />} Gastos</NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink to="/dashboard/iva" className="btn mt-2">{<AiOutlinePercentage />} IVA</NavLink>
                         </li>
                         <li className="nav-item">
                             <NavLink to="/dashboard/graphic" className="btn mt-2">{<GoGraph />} Gráficas</NavLink>

@@ -9,6 +9,7 @@ import Offers from '../components/Offers';
 import '../styles/Dashboard.css'
 import { api } from '../const/Url'
 import Cost from '../components/Cost';
+import Iva from '../components/Iva';
 
 const Dashboard = () => {
 
@@ -39,6 +40,7 @@ const Dashboard = () => {
                         <Route path="/dashboard/offers" component={Offers} />
                         <Route path="/dashboard/graphic" component={Graphic} />
                         <Route path="/dashboard/costs" component={Cost} />
+                        <Route path="/dashboard/iva" component={Iva} />
                     </div>
                 </div>
             </div>

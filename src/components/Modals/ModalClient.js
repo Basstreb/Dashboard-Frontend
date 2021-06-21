@@ -126,18 +126,18 @@ const ModalClient = props => {
                                 </div>
                                 <label className="col-sm-2 col-form-label">Teléfono</label>
                                 <div className="col">
-                                    <input type="tel" id="phone" className="form-control" required {...register("phoneNumber", { required: true, pattern: /[0-9]{9}/ })} />
+                                    <input type="tel" id="phone" className="form-control" required pattern="[0-9]{9}" {...register("phoneNumber")} />
                                 </div>
                             </div>
 
                             <div className="form-group row mt-2">
                                 <label className="col-sm-2 col-form-label">CIF</label>
                                 <div className="col">
-                                    <input type="text" className="form-control" {...register("cif", { required: true, pattern: /[A-Z]{1}[0-9]{8}/ })} />
+                                    <input type="text" className="form-control" required pattern="[A-Z]{1}[0-9]{8}" {...register("cif")} />
                                 </div>
                                 <label className="col-sm-2 col-form-label">Dirección</label>
                                 <div className="col">
-                                    <input type="text" className="form-control" {...register("direction", { required: true })} />
+                                    <input type="text" className="form-control" required {...register("direction")} />
                                 </div>
                             </div>
                         </div>

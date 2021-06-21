@@ -2,16 +2,21 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { api } from '../../const/Url';
 import { useForm } from 'react-hook-form';
+import useBringOffersReg from '../../hooks/useBringOffersReg';
 import '../../styles/Modal.css';
 
 
 const ModalOffer = props => {
+
+    const offerReg = useBringOffersReg();
 
     const [companyName, setCompany] = useState('');
     const [clientId, setClientId] = useState('');
     const [decisionDate, setDecisionDate] = useState('');
     const [id, setId] = useState('')
     const [check, setCheck] = useState(false);
+    const [percent, setPercent] = useState();
+    const [status, setStatus] = useState();
 
     const { register, handleSubmit, setValue, unregister } = useForm();
 
@@ -70,9 +75,9 @@ const ModalOffer = props => {
         const offer = data.offer
         const offerName = data.offerName
         const decisionDate = data.decisionDate
-        const status = data.status
+        let status = data.status
         const price = data.price
-        const percent = data.percent
+        const percentN = data.percent
 
         var formData = new FormData();
 
@@ -92,25 +97,69 @@ const ModalOffer = props => {
             console.log('FAILURE!!');
         });
 
-        const response = await fetch(api + "/update_offer", {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                id,
-                offer,
-                offerName,
-                decisionDate,
-                status,
-                price,
-                percent,
-            })
-        });
+        if (percentN !== "0") {
+            axios.post(api + "/create_offer_reg",
+                JSON.stringify({
+                    id,
+                    price,
+                    percentN,
+                }), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+            ).catch(function () {
+                console.log('FAILURE!!');
+            });
+        }
 
-        // Check correct answer
+        if (percent + parseInt(percentN) === 100) {
+            status = "PAYD";
+            axios.post(api + "/update_offer",
+                JSON.stringify({
+                    id,
+                    offer,
+                    offerName,
+                    decisionDate,
+                    status,
+                    price,
+                    percentN,
+                }), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+            ).catch(function () {
+                console.log('FAILURE!!');
+            }).then(function () {
+                window.location.reload(false);
+            });
+        } else {
+            axios.post(api + "/update_offer",
+                JSON.stringify({
+                    id,
+                    offer,
+                    offerName,
+                    decisionDate,
+                    status,
+                    price,
+                    percentN,
+                }), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+            ).catch(function () {
+                console.log('FAILURE!!');
+            }).then(function () {
+                window.location.reload(false);
+            });
+        }
+
         props.onClose();
-        window.location.reload(false);
-        await response.json();
     }
+
+    const offerRegFilter = offerReg && offerReg.filter(offer => offer.offerId === parseInt(id) && offer.percent !== 0)
 
     const closeOnEscapeKeyDown = (e) => {
         if ((e.charCode || e.keyCode) === 27) {
@@ -146,7 +195,9 @@ const ModalOffer = props => {
             setCompany(props.offer.companyName)
             setValue("price", String(props.offer.price))
             setValue("status", props.offer.status)
-            setValue("percent", String(props.offer.percent))
+            setStatus(props.offer.status)
+            setValue("percent", String(0))
+            setPercent(props.offer.percent)
         } else {
             setCheck(false)
             unregister("percent")
@@ -196,11 +247,20 @@ const ModalOffer = props => {
                                         {/* <input type="date" className="form-control" value={decisionDate} required min={decisionDate} max="2021-12-31" onChange={e => setDecisionDate(e.target.value)} /> */}
                                         <input type="date" className="form-control" min={decisionDate} max="2021-12-31" required {...register("decisionDate")} />
                                     </div>
+                                    {status === "PAYMENT_PENDING" || status === "PAYD" || status === "APPROVED" ?
+                                        <React.Fragment>
+                                            <label className="col-sm-2 col-form-label">Precio</label>
+                                            <div className="col">
+                                                <input type="number" className="form-control" required readOnly min="0" {...register("price")} />
+                                            </div>
+                                        </React.Fragment> :
+                                        <React.Fragment>
+                                            <label className="col-sm-2 col-form-label">Precio</label>
+                                            <div className="col">
+                                                <input type="number" className="form-control" required min="0" {...register("price")} />
+                                            </div>
+                                        </React.Fragment>}
 
-                                    <label className="col-sm-2 col-form-label">Precio</label>
-                                    <div className="col">
-                                        <input type="number" className="form-control" required min="0" {...register("price")} />
-                                    </div>
                                 </div>
                                 : ""}
 
@@ -217,10 +277,13 @@ const ModalOffer = props => {
                                         </select>
                                     </div>
 
-                                    <label className="col-sm-2 col-form-label">Porcentaje</label>
-                                    <div className="col">
-                                        <input type="number" className="form-control" required min="0" max="100" {...register("percent")} />
-                                    </div>
+                                    {status === "PAYMENT_PENDING" ?
+                                        <React.Fragment>
+                                            <label className="col-sm-2 col-form-label">Porcentaje</label>
+                                            <div className="col">
+                                                <input type="number" className="form-control" required min="0" max={100 - percent} {...register("percent")} />
+                                            </div>
+                                        </React.Fragment> : ""}
 
                                 </div>
                                 : <div className="form-group row mt-2">
@@ -239,20 +302,42 @@ const ModalOffer = props => {
                             <div className="form-group row mt-2">
                                 <label className="col-sm-2 col-form-label">Archivo: </label>
                                 <div className="col">
-                                    <input className="form-control" accept=".pdf" type="file" {...register("docs")} />
+                                    <input className="form-control" accept="application/pdf" type="file" {...register("docs")} />
                                 </div>
                             </div>
-
                         </div>
 
                         <div className="modal-footer">
                             <button onClick={props.onClose} type="button" className="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                             <button type="submit" className="btn btn-primary">Añadir</button>
                         </div>
+
+
+                        {offerRegFilter && offerRegFilter.length > 0 ?
+                            <div className="table-responsive mt-2">
+                                <table className="table table-striped table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Porcentaje Cobrado</th>
+                                            <th>Total Cobrado</th>
+                                            <th>Fecha Cobro</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="align-middle">
+                                        {offerReg && offerReg.filter(offer => offer.offerId === parseInt(id) && offer.percent !== 0).map(offer => (
+                                            <tr key={offer.id}>
+                                                <td>{offer.percent}</td>
+                                                <td>{offer.priceFinal.toFixed(2)}</td>
+                                                <td>{formatDate(offer.createdAt)}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div> : ""}
                     </form>
                 </div>
             </div>
-        </React.Fragment>
+        </React.Fragment >
     )
 }
 

@@ -88,11 +88,11 @@ const Offers = () => {
                                 <th>Oferta</th>
                                 <th>Nombre Oferta</th>
                                 <th>Precio</th>
+                                <th>Precio IVA</th>
                                 <th>Fecha de Decisión</th>
                                 <th>Fecha de Creación</th>
                                 <th>Código</th>
                                 <th>Estado</th>
-                                <th>Porcentaje</th>
                                 <th>PDF</th>
                                 <th></th>
                                 <th></th>
@@ -117,6 +117,9 @@ const Offers = () => {
                                         {offer.price}€
                                     </td>
                                     <td>
+                                        {offer.priceIva}€
+                                    </td>
+                                    <td>
                                         {formatDate(offer.decisionDate)}
                                     </td>
                                     <td>
@@ -127,9 +130,6 @@ const Offers = () => {
                                     </td>
                                     <td>
                                         {showStatus(offer.status)}
-                                    </td>
-                                    <td>
-                                        {offer.status === "PAYD" ? <div>{offer.percent}%</div> : ""}
                                     </td>
                                     <td>
                                         <a href={"/pdf/" + offer.code + ".pdf"} target="_blank" rel="noreferrer"><button className="btn btn-secondary">PDF</button></a>
