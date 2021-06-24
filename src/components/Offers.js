@@ -54,19 +54,20 @@ const Offers = () => {
                 <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 className="h2 me-5">Ofertas</h1>
 
-                    {clients ? <div className="form-control">
-                        <label className="me-3">Cliente:</label>
-                        <select name="id" className="selector" onChange={e => setIdForm(e.target.value)}>
-                            {clients && clients.filter(client => client.deletedAt === null).map(client => (
-                                <option value={client.id} key={client.id}>{client.companyName}</option>
-                            ))}
-                        </select>
-                        <button className="ms-5 btn btn-primary" type="button" onClick={() => {
-                            setShowModalOffer(true)
-                            cleanForm()
-                            setCheck(false)
-                        }}>Agregar Oferta</button>
-                    </div> : ""}
+                    {clients ?
+                        <div className="form-control">
+                            <label className="me-3">Cliente:</label>
+                            <select name="id" className="selector" onChange={e => setIdForm(e.target.value)}>
+                                {clients && clients.filter(client => client.deletedAt === null).map(client => (
+                                    <option value={client.id} key={client.id}>{client.companyName}</option>
+                                ))}
+                            </select>
+                            <button className="ms-5 btn btn-primary" type="button" onClick={() => {
+                                setShowModalOffer(true)
+                                cleanForm()
+                                setCheck(false)
+                            }}>Agregar Oferta</button>
+                        </div> : ""}
                 </div>
 
                 {check ? <ModalOffer onClose={() => setShowModalOffer(false)}

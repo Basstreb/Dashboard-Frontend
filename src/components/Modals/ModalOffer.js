@@ -196,7 +196,7 @@ const ModalOffer = props => {
             setValue("price", String(props.offer.price))
             setValue("status", props.offer.status)
             setStatus(props.offer.status)
-            setValue("percent", String(0))
+            setValue("percent", String(props.offer.percent))
             setPercent(props.offer.percent)
         } else {
             setCheck(false)

@@ -2,16 +2,19 @@ import React, { useState } from 'react'
 import useBringCommonCost from '../hooks/useBringCommonCost'
 import { AiFillDelete } from 'react-icons/ai';
 import { BiEditAlt } from 'react-icons/bi';
-import useBringStaff from '../hooks/useBringStaff';
-import useBringClients from '../hooks/useBringClients';
+// import useBringClients from '../hooks/useBringClients';
 import ModalCommonCost from './Modals/ModalCommonCost';
 import ModalErase from './Modals/ModalErase';
 import ModalStaffCost from './Modals/ModalStaffCost';
+import { useBringStaff } from '../hooks/useBringStaff'
+import useBringOffers from '../hooks/useBringOffers';
 
 const Cost = () => {
 
-    const clients = useBringClients();
+    // const clients = useBringClients();
+    const offers = useBringOffers();
     const commonCost = useBringCommonCost();
+    console.log(commonCost);
     const staffCost = useBringStaff();
 
     const [showModalCost, setShowModalCost] = useState(false)
@@ -49,7 +52,8 @@ const Cost = () => {
         document.getElementById("cost2").reset();
     }
 
-    const clientFilter = clients && clients.filter(client => client.id === parseInt(idForm));
+    // const clientFilter = clients && clients.filter(client => client.id === parseInt(idForm));
+    const offerFilter = offers && offers.filter(offer => offer.id === parseInt(idForm));
     const costFilter = commonCost && commonCost.filter(cost => cost.id === parseInt(idCost));
     const staffFilter = staffCost && staffCost.filter(staff => staff.id === parseInt(idStaff))
 
@@ -64,11 +68,11 @@ const Cost = () => {
                 <div className="row d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 className="h2 me-5 col-3">Gastos Comunes</h1>
 
-                    {clients ? <div className="form-control col">
+                    {offers ? <div className="form-control col">
                         <label className="me-3">Cliente:</label>
                         <select name="id" className="selector" onChange={e => setIdForm(e.target.value)}>
-                            {clients && clients.filter(client => client.deletedAt === null).map(client => (
-                                <option value={client.id} key={client.id}>{client.companyName}</option>
+                            {offers && offers.filter(offer => offer.deletedAt === null).map(offer => (
+                                <option value={offer.id} key={offer.id}>{offer.offerName}</option>
                             ))}
                         </select>
                         <button className="ms-5 btn btn-primary" type="button" onClick={() => {
@@ -84,7 +88,7 @@ const Cost = () => {
                     cost={costFilter && costFilter.find(cost => cost.id)}
                 /> : <ModalCommonCost onClose={() => setShowModalCost(false)}
                     show={showModalCost}
-                    client={clientFilter && clientFilter.find(client => client.id)} />}
+                    offer={offerFilter && offerFilter.find(offer => offer.id)} />}
 
                 {eraseCostStaff ?
                     <ModalErase onClose={() => setShowModalErase(false)} show={showModalErase} check={switchCliOff} costCom={costFilter && costFilter.find(cost => cost.id)} />
@@ -109,7 +113,7 @@ const Cost = () => {
                             </tr>
                         </thead>
                         <tbody className="align-middle">
-                            {commonCost && commonCost.filter(offer => offer.deletedAt === null).map(cost => (
+                            {commonCost && commonCost.filter(cost => cost.deletedAt === null).map(cost => (
                                 <tr key={cost.id}>
                                     <td>
                                         {cost.commonCostsName}
@@ -168,9 +172,12 @@ const Cost = () => {
                     </div>
                 </div>
 
-                <ModalStaffCost onClose={() => setShowModalStaff(false)}
-                    show={showModalStaff}
-                    staff={staffFilter && staffFilter.find(staff => staff.id)} />
+                {idStaff === 0 ?
+                    <ModalStaffCost onClose={() => setShowModalStaff(false)}
+                        show={showModalStaff} />
+                    : <ModalStaffCost onClose={() => setShowModalStaff(false)}
+                        show={showModalStaff}
+                        staff={staffFilter && staffFilter.find(staff => staff.id)} />}
 
                 <div className="table-responsive mt-2">
                     <table className="table table-striped table-sm">
@@ -180,7 +187,10 @@ const Cost = () => {
                                 <th>Importe Neto</th>
                                 <th>Coste Empresa</th>
                                 <th>Valor SS</th>
-                                <th>Proyectos</th>
+                                <th>Proyecto 1</th>
+                                <th>Proyecto 2</th>
+                                <th>Proyecto 3</th>
+                                <th>Proyecto 4</th>
                                 <th>Fecha</th>
                                 <th></th>
                                 <th></th>
@@ -202,37 +212,47 @@ const Cost = () => {
                                         {staff.socialInsurances}
                                     </td>
                                     <td>
-                                        {staff.project2 !== null
-                                            ?
-                                            <div className="row">
-                                                <div className="col">
-                                                    {staff.project1}
-                                                </div>
+                                        <div className="row justify-content-between align-items-center">
+                                            <div className="col">
+                                                {staff.project1}
+                                            </div>
+                                            <div className="col">
+                                                {staff.per1}%
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {staff.project2 && staff.project2 !== " " ?
+                                            <div className="row justify-content-between align-items-center">
                                                 <div className="col">
                                                     {staff.project2}
                                                 </div>
-                                            </div>
-                                            :
-                                            <div className="row">
                                                 <div className="col">
-                                                    {staff.project1}
+                                                    {staff.per2}%
                                                 </div>
-                                            </div>
-                                        }
-                                        {staff.project4 !== null
-                                            ?
-                                            <div className="row">
+                                            </div> : ""}
+                                    </td>
+                                    <td>
+                                        {staff.project3 && staff.project3 !== " " ?
+                                            <div className="row justify-content-between align-items-center">
                                                 <div className="col">
                                                     {staff.project3}
                                                 </div>
                                                 <div className="col">
+                                                    {staff.per3}%
+                                                </div>
+                                            </div> : ""}
+                                    </td>
+                                    <td>
+                                        {staff.project4 && staff.project4 !== " " ?
+                                            <div className="row justify-content-between align-items-center">
+                                                <div className="col">
                                                     {staff.project4}
                                                 </div>
-                                            </div>
-                                            :
-                                            <div className="col">
-                                                {staff.project3}
-                                            </div>}
+                                                <div className="col">
+                                                    {staff.per4}%
+                                                </div>
+                                            </div> : ""}
                                     </td>
                                     <td>
                                         {formatDate(staff.payDate)}

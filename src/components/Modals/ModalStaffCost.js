@@ -1,20 +1,52 @@
 import React, { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form';
 import { api } from '../../const/Url'
 import axios from 'axios'
+import useBringOffers from '../../hooks/useBringOffers';
 
 
 const ModalStaffCost = props => {
 
+    const offers = useBringOffers();
+
     const [check, setCheck] = useState(false);
-    const [id, setId] = useState();
+    const [id, setId] = useState(' ');
+    const [staffName, setStaffName] = useState(' ')
+    const [amount, setAmount] = useState(' ')
+    const [cost, setCost] = useState(' ')
+    // const [socialInsurances, setSocialInsurances] = useState(' ')
+    const [payDate, setPayDate] = useState(' ')
+    const [project1, setProject1] = useState(' ');
+    const [project2, setProject2] = useState(' ');
+    const [pr2Check, setPr2Check] = useState(false);
+    const [project3, setProject3] = useState(' ');
+    const [pr3Check, setPr3Check] = useState(false);
+    const [project4, setProject4] = useState(' ');
+    const [pr4Check, setPr4Check] = useState(false);
+    const [per1, setPer1] = useState('0');
+    const [per2, setPer2] = useState('0');
+    const [per3, setPer3] = useState('0');
+    const [per4, setPer4] = useState('0');
 
-    const { register, handleSubmit, setValue } = useForm();
+    const submitStaffCost = e => {
+        e.preventDefault()
 
-    const submitStaffCost = (data) => {
+        const data = {
+            staffName,
+            amount,
+            cost,
+            // socialInsurances,
+            project1,
+            per1,
+            project2,
+            per2,
+            project3,
+            per3,
+            project4,
+            per4,
+            payDate
+        }
 
         console.log(data);
-
         axios.post(api + "/create_staff",
             data, {
             headers: {
@@ -30,16 +62,8 @@ const ModalStaffCost = props => {
         props.onClose();
     }
 
-    const submitUpdateStaffCost = (data) => {
-        const staffName = data.staffName;
-        const amount = data.amount;
-        const cost = data.cost;
-        const socialInsurances = data.socialInsurances;
-        const project1 = data.project1;
-        const project2 = data.project2;
-        const project3 = data.project3;
-        const project4 = data.project4;
-        const payDate = data.payDate;
+    const submitUpdateStaffCost = e => {
+        e.preventDefault()
 
         axios.post(api + "/update_staff",
             JSON.stringify({
@@ -47,11 +71,15 @@ const ModalStaffCost = props => {
                 staffName,
                 amount,
                 cost,
-                socialInsurances,
+                // socialInsurances,
                 project1,
+                per1,
                 project2,
+                per2,
                 project3,
+                per3,
                 project4,
+                per4,
                 payDate
             }), {
             headers: {
@@ -72,25 +100,82 @@ const ModalStaffCost = props => {
         return newDate
     }
 
+    const onChangePr1 = e => {
+        console.log(e);
+        setProject1(e)
+        setPr2Check(true)
+    }
+
+    const onChangePr2 = e => {
+        console.log(e);
+        setProject2(e)
+        setPr3Check(true)
+    }
+
+    const onChangePr3 = e => {
+        console.log(e);
+        setProject3(e)
+        setPr4Check(true)
+    }
+
+    const onChangePr4 = e => {
+        console.log(e);
+        setProject4(e)
+    }
+
     useEffect(() => {
         if (props.staff) {
             setCheck(true)
-            setValue("staffName", props.staff.staffName)
-            setValue("amount", String(props.staff.amount))
-            setValue("cost", String(props.staff.cost))
-            setValue("socialInsurances", String(props.staff.socialInsurances))
-            setValue("project1", props.staff.project1)
-            setValue("project2", props.staff.project2)
-            setValue("project3", props.staff.project3)
-            setValue("project4", props.staff.project4)
-            setValue("payDate", formatDate(props.staff.payDate)[0])
+            setStaffName(props.staff.staffName)
+            setAmount(String(props.staff.amount))
+            setCost(String(props.staff.cost))
+            // setSocialInsurances(String(props.staff.socialInsurances))
+            setProject1(props.staff.project1)
+            if (props.staff.project1 && props.staff.project1 !== " ") {
+                setPr2Check(true)
+            } else {
+                setPr2Check(false)
+            }
+            setProject2(props.staff.project2)
+            if (props.staff.project2 && props.staff.project2 !== " ") {
+                setPr3Check(true)
+            } else {
+                setPr3Check(false)
+            }
+            setProject3(props.staff.project3)
+            if (props.staff.project3 && props.staff.project3 !== " ") {
+                setPr4Check(true)
+            } else {
+                setPr4Check(false)
+            }
+            setProject4(props.staff.project4)
+            setPayDate(formatDate(props.staff.payDate)[0])
             setId(String(props.staff.id))
+            setPer1(String(props.staff.per1))
+            setPer2(String(props.staff.per2))
+            setPer3(String(props.staff.per3))
+            setPer4(String(props.staff.per4))
         } else {
             setCheck(false)
+            setStaffName('')
+            setAmount('')
+            setCost('')
+            // setSocialInsurances('')
+            setProject1(' ')
+            setProject2(' ')
+            setProject3(' ')
+            setProject4(' ')
+            setPayDate('')
             setId('')
+            setPr2Check(false)
+            setPr3Check(false)
+            setPr4Check(false)
+            setPer1(String(0))
+            setPer2(String(0))
+            setPer3(String(0))
+            setPer4(String(0))
         }
-    }, [props.staff, setValue])
-
+    }, [props.staff])
 
     return (
         <React.Fragment>
@@ -98,60 +183,116 @@ const ModalStaffCost = props => {
                 <div className="modal-content" onClick={e => e.stopPropagation()}>
 
                     <div className="modal-header">
-                        <h4 className="modal-title">Añadir Cliente</h4>
+                        <h4 className="modal-title">Añadir Gasto Personal</h4>
                     </div>
 
-                    <form id="cost2" onSubmit={check ? handleSubmit(submitUpdateStaffCost) : handleSubmit(submitStaffCost)}>
+                    <form id="cost2" onSubmit={check ? submitUpdateStaffCost : submitStaffCost}>
                         <div className="modal-body">
                             <div className="form-group row">
                                 <label className="col-sm-2 col-form-label">Empleado</label>
                                 <div className="col">
-                                    <input type="text" className="form-control" required  {...register("staffName")} />
+                                    <input type="text" className="form-control" value={staffName} required onChange={e => setStaffName(e.target.value)} />
                                 </div>
                                 <label className="col-sm-2 col-form-label">Importe</label>
                                 <div className="col">
-                                    <input type="number" className="form-control" required  {...register("amount")} />
+                                    <input type="number" className="form-control" value={amount} min="0" required onChange={e => setAmount(e.target.value)} />
                                 </div>
                             </div>
 
                             <div className="form-group row mt-2">
                                 <label className="col-sm-2 col-form-label">Coste</label>
                                 <div className="col">
-                                    <input type="number" className="form-control" required {...register("cost")} />
+                                    <input type="number" className="form-control" value={cost} min="0" required onChange={e => setCost(e.target.value)} />
                                 </div>
+
                                 <label className="col-sm-2 col-form-label">Valor SS</label>
                                 <div className="col">
-                                    <input type="number" className="form-control" required {...register("socialInsurances")} />
+                                    <input type="number" className="form-control" value={amount - cost} readOnly />
                                 </div>
                             </div>
 
                             <div className="form-group row mt-2">
                                 <label className="col-sm-2 col-form-label">Proyecto 1</label>
                                 <div className="col">
-                                    <input type="text" className="form-control"  {...register("project1")} />
+                                    <select className="form-control" value={project1} onChange={(e) => { onChangePr1(e.target.value) }}>
+                                        <option value=" "> </option>
+                                        {offers && offers.filter(offer => offer.deletedAt === null &&
+                                            (offer.status === "PAYD" || offer.status === "APPROVED" || offer.status === "PAYMENT_PENDING")).map(offer => (
+                                                <option key={offer.id} value={offer.offerName}>{offer.offerName}</option>
+                                            ))}
+                                    </select>
                                 </div>
-                                <label className="col-sm-2 col-form-label">Proyecto 2</label>
+
+                                <label className="col-sm-2 col-form-label">Porcentaje</label>
                                 <div className="col">
-                                    <input type="text" className="form-control"  {...register("project2")} />
+                                    <input type="number" className="form-control" min="0" max={100 - per2 - per3 - per4} value={per1} onChange={(e) => { setPer1(e.target.value) }} />
                                 </div>
+
                             </div>
 
-                            <div className="form-group row mt-2">
-                                <label className="col-sm-2 col-form-label">Proyecto 3</label>
-                                <div className="col">
-                                    <input type="text" className="form-control"  {...register("project3")} />
-                                </div>
-                                <label className="col-sm-2 col-form-label">Proyecto 4</label>
-                                <div className="col">
-                                    <input type="text" className="form-control"  {...register("project4")} />
-                                </div>
-                            </div>
+                            {pr2Check &&
+                                <div className="form-group row mt-2">
+                                    <label className="col-sm-2 col-form-label">Proyecto 2</label>
+                                    <div className="col">
+                                        <select className="form-control" value={project2} onChange={e => onChangePr2(e.target.value)}>
+                                            <option value=" "> </option>
+                                            {offers && offers.filter(offer => offer.deletedAt === null &&
+                                                (offer.status === "PAYD" || offer.status === "APPROVED" || offer.status === "PAYMENT_PENDING")).map(offer => (
+                                                    <option key={offer.id} value={offer.offerName}>{offer.offerName}</option>
+                                                ))}
+                                        </select>
+                                    </div>
 
-                            <div className="form-group row mt-2">
-                                <label className="col-sm-2 col-form-label">Mes Nom.</label>
-                                <div className="col">
-                                    <input type="date" className="form-control" required min="2021-01-01" max="2021-12-31" {...register("payDate")} />
-                                </div>
+                                    <label className="col-sm-2 col-form-label">Porcentaje</label>
+                                    <div className="col">
+                                        <input type="number" className="form-control" min="0" max={100 - per1 - per3 - per4} value={per2} onChange={(e) => { setPer2(e.target.value) }} />
+                                    </div>
+                                </div>}
+
+                            {pr3Check &&
+                                <div className="form-group row mt-2">
+                                    <label className="col-sm-2 col-form-label">Proyecto 3</label>
+                                    <div className="col">
+                                        <select className="form-control" value={project3} onChange={e => onChangePr3(e.target.value)}>
+                                            <option value=" "> </option>
+                                            {offers && offers.filter(offer => offer.deletedAt === null &&
+                                                (offer.status === "PAYD" || offer.status === "APPROVED" || offer.status === "PAYMENT_PENDING")).map(offer => (
+                                                    <option key={offer.id} value={offer.offerName}>{offer.offerName}</option>
+                                                ))}
+                                        </select>
+                                    </div>
+
+                                    <label className="col-sm-2 col-form-label">Porcentaje</label>
+                                    <div className="col">
+                                        <input type="number" className="form-control" value={per3} min="0" max={100 - per1 - per2 - per4} onChange={(e) => { setPer3(e.target.value) }} />
+                                    </div>
+                                </div>}
+
+                            {pr4Check &&
+                                <div className="form-group row mt-2">
+                                    <label className="col-sm-2 col-form-label">Proyecto 4</label>
+                                    <div className="col">
+                                        <select className="form-control" value={project4} onChange={e => onChangePr4(e.target.value)}>
+                                            <option value=" "> </option>
+                                            {offers && offers.filter(offer => offer.deletedAt === null &&
+                                                (offer.status === "PAYD" || offer.status === "APPROVED" || offer.status === "PAYMENT_PENDING")).map(offer => (
+                                                    <option key={offer.id} value={offer.offerName}>{offer.offerName}</option>
+                                                ))}
+                                        </select>
+                                    </div>
+
+                                    <label className="col-sm-2 col-form-label">Porcentaje</label>
+                                    <div className="col">
+                                        <input type="number" className="form-control" value={per4} min="0" max={100 - per1 - per2 - per3} onChange={(e) => { setPer4(e.target.value) }} />
+                                    </div>
+                                </div>}
+
+                        </div>
+
+                        <div className="form-group row mt-2">
+                            <label className="col-sm-2 col-form-label">Mes Nom.</label>
+                            <div className="col">
+                                <input type="date" className="form-control" value={payDate} required min="2021-01-01" max="2021-12-31" onChange={e => setPayDate(e.target.value)} />
                             </div>
                         </div>
 

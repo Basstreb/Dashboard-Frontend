@@ -7,6 +7,8 @@ const API_2 = api + '/list_iva_repercuted_price';
 const API_3 = api + '/list_iva_supported';
 const API_4 = api + '/list_iva_repercuted';
 const API_5 = api + '/list_iva_total';
+const API_6 = api + '/list_iva_paid';
+const API_7 = api + '/list_iva_paid_price';
 
 const useBringPriceIvaSupported = () => {
     const [supported, setSupported] = useState([]);
@@ -78,4 +80,32 @@ const useBringIvaAcumulative = () => {
     return repercuted
 }
 
-export { useBringPriceIvaSupported, useBringPriceIvaRepercuted, useBringIvaSupported, useBringIvaRepercuted, useBringIvaAcumulative }
+const useBringIvaPaid = () => {
+    const [paid, setPaid] = useState([]);
+
+
+    useEffect(() => {
+        axios.get(API_6)
+            .then(res => {
+                setPaid(res.data)
+            })
+    }, []);
+
+    return paid
+}
+
+const useBringIvaPaidPrice = () => {
+    const [paid, setPaid] = useState([]);
+
+
+    useEffect(() => {
+        axios.get(API_7)
+            .then(res => {
+                setPaid(res.data)
+            })
+    }, []);
+
+    return paid
+}
+
+export { useBringPriceIvaSupported, useBringPriceIvaRepercuted, useBringIvaSupported, useBringIvaRepercuted, useBringIvaAcumulative, useBringIvaPaid, useBringIvaPaidPrice }

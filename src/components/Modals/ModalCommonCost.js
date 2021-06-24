@@ -117,11 +117,11 @@ const ModalCommonCost = props => {
     }
 
     useEffect(() => {
-        if (props.client) {
-            setClient(props.client.companyName)
-            setValue("clientName", props.client.companyName)
-            setClientId(String(props.client.id))
-            setValue("clientId", String(props.client.id))
+        if (props.offer) {
+            setClient(props.offer.offerName)
+            setValue("clientName", props.offer.offerName)
+            setClientId(String(props.offer.id))
+            setValue("clientId", String(props.offer.id))
         }
 
         if (props.cost) {
@@ -142,8 +142,23 @@ const ModalCommonCost = props => {
             setId('')
             setValue("price", "")
         }
-    }, [props.client, props.cost, setValue, unregister])
+    }, [props.offer, props.cost, setValue, unregister])
 
+
+    const closeOnEscapeKeyDown = (e) => {
+        if ((e.charCode || e.keyCode) === 27) {
+            props.onClose()
+        }
+    }
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+        document.body.addEventListener('keydown', closeOnEscapeKeyDown)
+        return function cleanup() {
+            document.body.removeEventListener('keydown', closeOnEscapeKeyDown)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <React.Fragment>
@@ -151,17 +166,17 @@ const ModalCommonCost = props => {
                 <div className="modal-content" onClick={e => e.stopPropagation()}>
 
                     <div className="modal-header">
-                        <h4 className="modal-title">Añadir Cliente</h4>
+                        <h4 className="modal-title">Añadir Gasto Común</h4>
                     </div>
 
                     <form id="cost1" onSubmit={check ? handleSubmit(submitUpdateCommonCost) : handleSubmit(submitCommonCost)}>
                         <div className="modal-body">
                             <div className="form-group row">
-                                <label className="col-sm-2 col-form-label">Id Cliente</label>
+                                <label className="col-sm-2 col-form-label">Id Oferta</label>
                                 <div className="col">
                                     <input type="text" className="form-control" value={clientId} required readOnly {...register("clientId")} />
                                 </div>
-                                <label className="col-sm-2 col-form-label">Cliente</label>
+                                <label className="col-sm-2 col-form-label">Oferta</label>
                                 <div className="col">
                                     <input type="text" className="form-control" value={clientName} required readOnly {...register("clientName")} />
                                 </div>
