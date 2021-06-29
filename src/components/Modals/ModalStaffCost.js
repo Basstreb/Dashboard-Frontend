@@ -46,9 +46,30 @@ const ModalStaffCost = props => {
             payDate
         }
 
-        console.log(data);
+        const data2 = {
+            amount,
+            project1,
+            per1,
+            project2,
+            per2,
+            project3,
+            per3,
+            project4,
+            per4
+        }
+
         axios.post(api + "/create_staff",
             data, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        ).catch(function (error) {
+            console.log(error);
+        })
+
+        axios.post(api + "/create_staff_pr",
+            data2, {
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -71,7 +92,30 @@ const ModalStaffCost = props => {
                 staffName,
                 amount,
                 cost,
-                // socialInsurances,
+                project1,
+                per1,
+                project2,
+                per2,
+                project3,
+                per3,
+                project4,
+                per4,
+                payDate
+            }), {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        ).catch(function (error) {
+            console.log(error);
+        })
+
+        axios.post(api + "/update_staff_pr",
+            JSON.stringify({
+                id,
+                staffName,
+                amount,
+                cost,
                 project1,
                 per1,
                 project2,
@@ -101,25 +145,21 @@ const ModalStaffCost = props => {
     }
 
     const onChangePr1 = e => {
-        console.log(e);
         setProject1(e)
         setPr2Check(true)
     }
 
     const onChangePr2 = e => {
-        console.log(e);
         setProject2(e)
         setPr3Check(true)
     }
 
     const onChangePr3 = e => {
-        console.log(e);
         setProject3(e)
         setPr4Check(true)
     }
 
     const onChangePr4 = e => {
-        console.log(e);
         setProject4(e)
     }
 
@@ -218,7 +258,7 @@ const ModalStaffCost = props => {
                                         <option value=" "> </option>
                                         {offers && offers.filter(offer => offer.deletedAt === null &&
                                             (offer.status === "PAYD" || offer.status === "APPROVED" || offer.status === "PAYMENT_PENDING")).map(offer => (
-                                                <option key={offer.id} value={offer.offerName}>{offer.offerName}</option>
+                                                <option key={offer.id} value={offer.id} >{offer.offerName}</option>
                                             ))}
                                     </select>
                                 </div>
@@ -238,7 +278,7 @@ const ModalStaffCost = props => {
                                             <option value=" "> </option>
                                             {offers && offers.filter(offer => offer.deletedAt === null &&
                                                 (offer.status === "PAYD" || offer.status === "APPROVED" || offer.status === "PAYMENT_PENDING")).map(offer => (
-                                                    <option key={offer.id} value={offer.offerName}>{offer.offerName}</option>
+                                                    <option key={offer.id} value={offer.id}>{offer.offerName}</option>
                                                 ))}
                                         </select>
                                     </div>
@@ -257,7 +297,7 @@ const ModalStaffCost = props => {
                                             <option value=" "> </option>
                                             {offers && offers.filter(offer => offer.deletedAt === null &&
                                                 (offer.status === "PAYD" || offer.status === "APPROVED" || offer.status === "PAYMENT_PENDING")).map(offer => (
-                                                    <option key={offer.id} value={offer.offerName}>{offer.offerName}</option>
+                                                    <option key={offer.id} value={offer.id}>{offer.offerName}</option>
                                                 ))}
                                         </select>
                                     </div>
@@ -276,7 +316,7 @@ const ModalStaffCost = props => {
                                             <option value=" "> </option>
                                             {offers && offers.filter(offer => offer.deletedAt === null &&
                                                 (offer.status === "PAYD" || offer.status === "APPROVED" || offer.status === "PAYMENT_PENDING")).map(offer => (
-                                                    <option key={offer.id} value={offer.offerName}>{offer.offerName}</option>
+                                                    <option key={offer.id} value={offer.id}>{offer.offerName}</option>
                                                 ))}
                                         </select>
                                     </div>

@@ -76,6 +76,19 @@ const ModalErase = props => {
                 props.onClose();
                 break;
             case 4:
+                const prId = String(id)
+                axios.post(api + "/delete_staff_pr",
+                    JSON.stringify({
+                        prId,
+                    }), {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+                ).catch(function (error) {
+                    console.log(error);
+                })
+
                 axios.post(api + "/delete_staff",
                     JSON.stringify({
                         id,

@@ -3,24 +3,23 @@ import Chart from "react-google-charts";
 import { useBringIvaPaidPrice, useBringPriceIvaRepercuted, useBringPriceIvaSupported } from '../hooks/useBringIva';
 import useBringMonthCostData from '../hooks/useBringMonthCostData';
 import useBringMonthData from '../hooks/useBringMonthData';
-import useBringOffers from '../hooks/useBringOffers';
+import { useBringRent } from '../hooks/useBringRent';
 import { useBringStaffData } from '../hooks/useBringStaff';
 
 const Graphic = () => {
 
-    //Bring data from de db 
+    //Bring data from de db
     const offersMonthData = useBringMonthData();
     const offersMonthCostData = useBringMonthCostData();
     const ivaSupported = useBringPriceIvaSupported();
     const ivaRepercuted = useBringPriceIvaRepercuted();
     const ivaPaid = useBringIvaPaidPrice();
     const staffCostData = useBringStaffData();
-    const offersRent = useBringOffers();
+    const offersRent = useBringRent();
 
-    const rent = [["Proyecto", "Ganancia", "Gasto", "Total"]]
+    const rent = [["Proyecto", "Presupuesto", "Gasto", "Rentabilidad"]]
 
-    offersRent && offersRent.filter(offer => offer.deletedAt === null &&
-        (offer.status === "PAYD" || offer.status === "APPROVED" || offer.status === "PAYMENT_PENDING")).map(offer => rent.push([offer.offerName, offer.priceIva, 5000, offer.priceIva - 5000]))
+    offersRent && offersRent.map(offer => rent.push([offer.offerName, offer.total, offer.commonCost + offer.staffCost, offer.total - (offer.commonCost + offer.staffCost)]))
 
     const junTotal = offersMonthData && offersMonthData.find(price => price.month === 6) ? offersMonthData.find(price => price.month === 6).price : 0;
     const junCost = offersMonthCostData && offersMonthCostData.find(price => price.month === 6) ? offersMonthCostData.find(price => price.month === 6).amount : 0;
@@ -93,12 +92,12 @@ const Graphic = () => {
                         data={[
                             ['Mes', 'Total', 'Gastos Comunes', 'Gasto Personal', 'Ganancia'],
                             ["Junio", junTotal, junCost, junStaff, junTotal - junCost - junStaff],
-                            ["Julio", julyTotal, julyCost, julyStaff, julyTotal - julyCost],
-                            ["Agosto", augTotal, augCost, augStaff, augTotal - augCost],
-                            ["Septiembre", septTotal, septCost, septStaff, septTotal - septCost],
-                            ["Octubre", octTotal, octCost, octStaff, octTotal - octCost],
-                            ["Noviembre", novTotal, novCost, novStaff, novTotal - novCost],
-                            ["Diciembre", dicTotal, dicCost, dicStaff, dicTotal - dicCost],
+                            ["Julio", julyTotal, julyCost, julyStaff, julyTotal - julyCost - julyStaff],
+                            ["Agosto", augTotal, augCost, augStaff, augTotal - augCost - augStaff],
+                            ["Septiembre", septTotal, septCost, septStaff, septTotal - septCost - septStaff],
+                            ["Octubre", octTotal, octCost, octStaff, octTotal - octCost - octStaff],
+                            ["Noviembre", novTotal, novCost, novStaff, novTotal - novCost - novStaff],
+                            ["Diciembre", dicTotal, dicCost, dicStaff, dicTotal - dicCost - dicStaff],
                         ]}
                         options={{
                             chart: {
@@ -138,7 +137,7 @@ const Graphic = () => {
             </div>
 
             <div className="container">
-                {(ivaSupported && ivaSupported.length > 0) || (ivaRepercuted && ivaRepercuted.length > 0) ?
+                {(offersRent && offersRent.length > 0) ?
                     <Chart
                         width={'100%'}
                         height={'550px'}

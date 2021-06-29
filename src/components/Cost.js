@@ -14,7 +14,6 @@ const Cost = () => {
     // const clients = useBringClients();
     const offers = useBringOffers();
     const commonCost = useBringCommonCost();
-    console.log(commonCost);
     const staffCost = useBringStaff();
 
     const [showModalCost, setShowModalCost] = useState(false)
@@ -69,11 +68,12 @@ const Cost = () => {
                     <h1 className="h2 me-5 col-3">Gastos Comunes</h1>
 
                     {offers ? <div className="form-control col">
-                        <label className="me-3">Cliente:</label>
+                        <label className="me-3">Oferta:</label>
                         <select name="id" className="selector" onChange={e => setIdForm(e.target.value)}>
-                            {offers && offers.filter(offer => offer.deletedAt === null).map(offer => (
-                                <option value={offer.id} key={offer.id}>{offer.offerName}</option>
-                            ))}
+                            {offers && offers.filter(offer => offer.deletedAt === null &&
+                                (offer.status === "PAYD" || offer.status === "APPROVED" || offer.status === "PAYMENT_PENDING")).map(offer => (
+                                    <option value={offer.id} key={offer.id}>{offer.offerName}</option>
+                                ))}
                         </select>
                         <button className="ms-5 btn btn-primary" type="button" onClick={() => {
                             setShowModalCost(true)
@@ -100,7 +100,7 @@ const Cost = () => {
                         <thead>
                             <tr>
                                 <th>Gasto</th>
-                                <th>Cliente</th>
+                                <th>Oferta</th>
                                 <th>Tipo</th>
                                 <th>Importe con IVA</th>
                                 <th>Importe sin IVA</th>
@@ -119,7 +119,7 @@ const Cost = () => {
                                         {cost.commonCostsName}
                                     </td>
                                     <td>
-                                        {cost.clientName}
+                                        {cost.offerName}
                                     </td>
                                     <td>
                                         {showTypo(cost.typo)}
@@ -203,18 +203,18 @@ const Cost = () => {
                                         {staff.staffName}
                                     </td>
                                     <td>
-                                        {staff.amount}
+                                        {staff.amount}€
                                     </td>
                                     <td>
-                                        {staff.cost}
+                                        {staff.cost}€
                                     </td>
                                     <td>
-                                        {staff.socialInsurances}
+                                        {staff.socialInsurances}€
                                     </td>
                                     <td>
                                         <div className="row justify-content-between align-items-center">
                                             <div className="col">
-                                                {staff.project1}
+                                                {staff.project1Name}
                                             </div>
                                             <div className="col">
                                                 {staff.per1}%
@@ -225,7 +225,7 @@ const Cost = () => {
                                         {staff.project2 && staff.project2 !== " " ?
                                             <div className="row justify-content-between align-items-center">
                                                 <div className="col">
-                                                    {staff.project2}
+                                                    {staff.project2Name}
                                                 </div>
                                                 <div className="col">
                                                     {staff.per2}%
@@ -236,7 +236,7 @@ const Cost = () => {
                                         {staff.project3 && staff.project3 !== " " ?
                                             <div className="row justify-content-between align-items-center">
                                                 <div className="col">
-                                                    {staff.project3}
+                                                    {staff.project3Name}
                                                 </div>
                                                 <div className="col">
                                                     {staff.per3}%
@@ -247,7 +247,7 @@ const Cost = () => {
                                         {staff.project4 && staff.project4 !== " " ?
                                             <div className="row justify-content-between align-items-center">
                                                 <div className="col">
-                                                    {staff.project4}
+                                                    {staff.project4Name}
                                                 </div>
                                                 <div className="col">
                                                     {staff.per4}%

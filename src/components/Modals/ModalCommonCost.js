@@ -7,8 +7,8 @@ import axios from 'axios'
 const ModalCommonCost = props => {
 
     const [check, setCheck] = useState(false);
-    const [clientName, setClient] = useState('');
-    const [clientId, setClientId] = useState('');
+    const [offerName, setOffer] = useState('');
+    const [offerId, setOfferId] = useState('');
     const [id, setId] = useState();
 
     const { register, handleSubmit, setValue, unregister } = useForm();
@@ -20,8 +20,8 @@ const ModalCommonCost = props => {
 
     const submitCommonCost = (data) => {
         const commonCostsName = data.commonCostsName;
-        const clientId = data.clientId;
-        const clientName = data.clientName;
+        const offerId = data.offerId;
+        const offerName = data.offerName;
         const amount = data.amount;
         const costDate = data.costDate;
         const typo = data.typo;
@@ -46,8 +46,8 @@ const ModalCommonCost = props => {
         axios.post(api + "/create_common",
             JSON.stringify({
                 commonCostsName,
-                clientId,
-                clientName,
+                offerId,
+                offerName,
                 amount,
                 costDate,
                 typo,
@@ -118,10 +118,10 @@ const ModalCommonCost = props => {
 
     useEffect(() => {
         if (props.offer) {
-            setClient(props.offer.offerName)
-            setValue("clientName", props.offer.offerName)
-            setClientId(String(props.offer.id))
-            setValue("clientId", String(props.offer.id))
+            setOffer(props.offer.offerName)
+            setValue("offerName", props.offer.offerName)
+            setOfferId(String(props.offer.id))
+            setValue("offerId", String(props.offer.id))
         }
 
         if (props.cost) {
@@ -130,8 +130,8 @@ const ModalCommonCost = props => {
             setValue("commonCostsName", props.cost.commonCostsName)
             setValue("amount", String(props.cost.amount))
             setId(String(props.cost.id))
-            setClientId(props.cost.clientId)
-            setClient(props.cost.clientName)
+            setOfferId(props.cost.clientId)
+            setOffer(props.cost.clientName)
             setValue("typo", String(props.cost.typo))
             setValue("iva", String(props.cost.iva))
         } else {
@@ -174,11 +174,11 @@ const ModalCommonCost = props => {
                             <div className="form-group row">
                                 <label className="col-sm-2 col-form-label">Id Oferta</label>
                                 <div className="col">
-                                    <input type="text" className="form-control" value={clientId} required readOnly {...register("clientId")} />
+                                    <input type="text" className="form-control" value={offerId} required readOnly {...register("offerId")} />
                                 </div>
                                 <label className="col-sm-2 col-form-label">Oferta</label>
                                 <div className="col">
-                                    <input type="text" className="form-control" value={clientName} required readOnly {...register("clientName")} />
+                                    <input type="text" className="form-control" value={offerName} required readOnly {...register("offerName")} />
                                 </div>
                             </div>
 
