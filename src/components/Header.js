@@ -28,7 +28,7 @@ const Header = () => {
                 </button> */}
                 <ul className="navbar-nav px-3">
                     <li className="nav-item text-nowrap">
-                        <Link className="nav-link sing-out" to="/" onClick={logOut}>Sign out</Link>
+                        <Link className="nav-link sing-out" to="/" onClick={logOut}>Salir</Link>
                     </li>
                 </ul>
             </header>

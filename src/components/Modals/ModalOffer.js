@@ -29,6 +29,8 @@ const ModalOffer = props => {
 
     const submitOffer = async (data) => {
 
+        console.log(data);
+
         const clientId = data.clientId
         const companyName = data.companyName
         const decisionDate = data.decisionDate
@@ -72,6 +74,9 @@ const ModalOffer = props => {
     }
 
     const submitUpdateOffer = async (data) => {
+
+        console.log(data);
+
         const offer = data.offer
         const offerName = data.offerName
         const decisionDate = data.decisionDate
@@ -213,7 +218,7 @@ const ModalOffer = props => {
             <div className={`modal ${props.show ? 'show' : ''}`} onClick={props.onClose}>
                 <div className="modal-content" onClick={e => e.stopPropagation()}>
                     <div className="modal-header">
-                        <h4 className="modal-title">Añadir Cliente</h4>
+                        <h4 className="modal-title">{check ? "Editar Oferta" : "Añadir Oferta"}</h4>
                     </div>
                     <form onSubmit={check ? handleSubmit(submitUpdateOffer) : handleSubmit(submitOffer)} id="offer">
                         <div className="modal-body">
@@ -245,7 +250,7 @@ const ModalOffer = props => {
                                     <label className="col-sm-2 col-form-label">Fecha Dec.</label>
                                     <div className="col">
                                         {/* <input type="date" className="form-control" value={decisionDate} required min={decisionDate} max="2021-12-31" onChange={e => setDecisionDate(e.target.value)} /> */}
-                                        <input type="date" className="form-control" min={decisionDate} max="2021-12-31" required {...register("decisionDate")} />
+                                        <input type="date" className="form-control" min={decisionDate} max="2022-12-31" required {...register("decisionDate")} />
                                     </div>
                                     {status === "PAYMENT_PENDING" || status === "PAYD" || status === "APPROVED" ?
                                         <React.Fragment>
@@ -289,7 +294,7 @@ const ModalOffer = props => {
                                 : <div className="form-group row mt-2">
                                     <label className="col-sm-2 col-form-label">Fecha Dec.</label>
                                     <div className="col">
-                                        <input type="date" className="form-control" required min={datePickerId} max="2021-12-31" {...register("decisionDate")} />
+                                        <input type="date" className="form-control" required min={datePickerId} max="2022-12-31" {...register("decisionDate")} />
                                     </div>
 
                                     <label className="col-sm-2 col-form-label">Precio</label>

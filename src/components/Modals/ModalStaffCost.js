@@ -46,6 +46,8 @@ const ModalStaffCost = props => {
             payDate
         }
 
+        console.log(data);
+
         const data2 = {
             amount,
             project1,
@@ -57,6 +59,8 @@ const ModalStaffCost = props => {
             project4,
             per4
         }
+
+        console.log(data2);
 
         axios.post(api + "/create_staff",
             data, {
@@ -85,6 +89,24 @@ const ModalStaffCost = props => {
 
     const submitUpdateStaffCost = e => {
         e.preventDefault()
+
+        const data = {
+            id,
+            staffName,
+            amount,
+            cost,
+            project1,
+            per1,
+            project2,
+            per2,
+            project3,
+            per3,
+            project4,
+            per4,
+            payDate
+        }
+
+        console.log(data)
 
         axios.post(api + "/update_staff",
             JSON.stringify({
@@ -332,7 +354,7 @@ const ModalStaffCost = props => {
                         <div className="form-group row mt-2">
                             <label className="col-sm-2 col-form-label">Mes Nom.</label>
                             <div className="col">
-                                <input type="date" className="form-control" value={payDate} required min="2021-01-01" max="2021-12-31" onChange={e => setPayDate(e.target.value)} />
+                                <input type="date" className="form-control" value={payDate} required min="2021-01-01" onChange={e => setPayDate(e.target.value)} />
                             </div>
                         </div>
 

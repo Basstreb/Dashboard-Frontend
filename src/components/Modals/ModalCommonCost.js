@@ -5,6 +5,7 @@ import axios from 'axios'
 
 
 const ModalCommonCost = props => {
+    console.log(props);
 
     const [check, setCheck] = useState(false);
     const [offerName, setOffer] = useState('');
@@ -26,6 +27,8 @@ const ModalCommonCost = props => {
         const costDate = data.costDate;
         const typo = data.typo;
         const iva = data.iva;
+
+        console.log(data);
 
         var formData = new FormData();
 
@@ -68,12 +71,15 @@ const ModalCommonCost = props => {
 
     const submitUpdateCommonCost = (data) => {
         const commonCostsName = data.commonCostsName;
-        const clientId = data.clientId;
-        const clientName = data.clientName;
+        const offerId = data.offerId;
+        const offerName = data.offerName;
         const amount = data.amount;
         const costDate = data.costDate;
         const typo = data.typo;
         const iva = data.iva;
+
+        console.log(data);
+        console.log(typeof id);
 
         var formData = new FormData();
 
@@ -96,8 +102,8 @@ const ModalCommonCost = props => {
             JSON.stringify({
                 id,
                 commonCostsName,
-                clientId,
-                clientName,
+                offerId,
+                offerName,
                 amount,
                 costDate,
                 typo,
@@ -110,7 +116,7 @@ const ModalCommonCost = props => {
         ).catch(function (error) {
             console.log(error);
         }).then(function () {
-            window.location.reload(false);
+            // window.location.reload(false);
         });
 
         props.onClose();
@@ -118,6 +124,7 @@ const ModalCommonCost = props => {
 
     useEffect(() => {
         if (props.offer) {
+            console.log(props.offer);
             setOffer(props.offer.offerName)
             setValue("offerName", props.offer.offerName)
             setOfferId(String(props.offer.id))
@@ -130,8 +137,8 @@ const ModalCommonCost = props => {
             setValue("commonCostsName", props.cost.commonCostsName)
             setValue("amount", String(props.cost.amount))
             setId(String(props.cost.id))
-            setOfferId(props.cost.clientId)
-            setOffer(props.cost.clientName)
+            setOfferId(String(props.cost.offerId))
+            setOffer(String(props.cost.offerName))
             setValue("typo", String(props.cost.typo))
             setValue("iva", String(props.cost.iva))
         } else {
@@ -142,8 +149,7 @@ const ModalCommonCost = props => {
             setId('')
             setValue("price", "")
         }
-    }, [props.offer, props.cost, setValue, unregister])
-
+    }, [setValue, unregister, props])
 
     const closeOnEscapeKeyDown = (e) => {
         if ((e.charCode || e.keyCode) === 27) {
@@ -166,7 +172,7 @@ const ModalCommonCost = props => {
                 <div className="modal-content" onClick={e => e.stopPropagation()}>
 
                     <div className="modal-header">
-                        <h4 className="modal-title">Añadir Gasto Común</h4>
+                        <h4 className="modal-title">{check ? "Editar Gasto Común" : "Añadir Gasto Común"}</h4>
                     </div>
 
                     <form id="cost1" onSubmit={check ? handleSubmit(submitUpdateCommonCost) : handleSubmit(submitCommonCost)}>
@@ -174,7 +180,7 @@ const ModalCommonCost = props => {
                             <div className="form-group row">
                                 <label className="col-sm-2 col-form-label">Id Oferta</label>
                                 <div className="col">
-                                    <input type="text" className="form-control" value={offerId} required readOnly {...register("offerId")} />
+                                    <input type="text" className="form-control" value={offerId} required readOnly />
                                 </div>
                                 <label className="col-sm-2 col-form-label">Oferta</label>
                                 <div className="col">
@@ -215,7 +221,7 @@ const ModalCommonCost = props => {
                             <div className="form-group row mt-2">
                                 <label className="col-sm-2 col-form-label">Fecha Dec.</label>
                                 <div className="col">
-                                    <input type="date" className="form-control" required min="2021-01-01" max="2021-12-31" {...register("costDate")} />
+                                    <input type="date" className="form-control" required min="2021-01-01" {...register("costDate")} />
                                 </div>
                             </div>
 

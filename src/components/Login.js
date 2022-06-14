@@ -15,6 +15,8 @@ const Login = (props) => {
 
     const submitLogin = async (data) => {
 
+        console.log(data);
+
         const response = await fetch(api + "/login", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -42,7 +44,7 @@ const Login = (props) => {
             <main className="form-signin">
                 <form onSubmit={handleSubmit(submitLogin)}>
                     <img className="mb-4" src={merkLogo} alt="" width="72" height="57" />
-                    <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
+                    <h1 className="h3 mb-3 fw-normal">Porfavor identificate</h1>
 
                     <div className="form-floating">
                         <input
@@ -52,7 +54,7 @@ const Login = (props) => {
                             required
                             {...register("email")}
                         />
-                        <label>Email address</label>
+                        <label>Dirección de email</label>
                     </div>
 
                     <div className="form-floating">
@@ -63,15 +65,15 @@ const Login = (props) => {
                             required
                             {...register("password")}
                         />
-                        <label>Password</label>
+                        <label>Contraseña</label>
                     </div>
 
                     <div className="mb-2" style={{ color: 'red' }}>
                         {emailError ? 'El email o la contraseña son incorrectos' : ''}
                     </div>
 
-                    <button className="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-                    <Link to="/register" className="mt-2 w-100 btn btn-lg btn-outline-primary" type="submit">Register</Link>
+                    <button className="w-100 btn btn-lg btn-primary" type="submit">Entrar</button>
+                    <Link to="/register" className="mt-2 w-100 btn btn-lg btn-outline-primary" type="submit">Registro</Link>
                 </form>
             </main>
         </div>

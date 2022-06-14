@@ -43,7 +43,7 @@ const Register = () => {
             <main className="form-signin">
                 <form onSubmit={submitRegistration}>
                     <img className="mb-4" src={merkLogo} alt="logo" width="72" height="57" />
-                    <h1 className="h3 mb-3 fw-normal">Please sign up</h1>
+                    <h1 className="h3 mb-3 fw-normal">Porfavor registrate</h1>
 
                     <div className="form-floating">
                         <input
@@ -53,7 +53,7 @@ const Register = () => {
                             required
                             onChange={e => setName(e.target.value)}
                         />
-                        <label>Username</label>
+                        <label>Nombre</label>
                     </div>
 
                     <div className="form-floating">
@@ -64,7 +64,7 @@ const Register = () => {
                             required
                             onChange={e => setEmail(e.target.value)}
                         />
-                        <label>Email address</label>
+                        <label>Dirección de correo</label>
                     </div>
 
                     <div className="form-floating">
@@ -75,15 +75,15 @@ const Register = () => {
                             required
                             onChange={e => setPassword(e.target.value)}
                         />
-                        <label>Password</label>
+                        <label>Contraseña</label>
                     </div>
 
                     <div className="mb-2" style={{ color: 'red' }} >
                         {emailError ? 'El email ya existe' : ''}
                     </div>
 
-                    <button className="w-100 btn btn-lg btn-primary" type="submit">Register</button>
-                    <Link to="/" className="mt-2 w-100 btn btn-lg btn-outline-primary" type="submit">Back</Link>
+                    <button className="w-100 btn btn-lg btn-primary" type="submit">Registrar</button>
+                    <Link to="/" className="mt-2 w-100 btn btn-lg btn-outline-primary" type="submit">Volver</Link>
                 </form>
             </main>
         </div>

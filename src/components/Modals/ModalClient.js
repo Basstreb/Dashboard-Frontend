@@ -104,7 +104,7 @@ const ModalClient = props => {
             <div className={`modal ${props.show ? 'show' : ''}`} onClick={props.onClose}>
                 <div className="modal-content" onClick={e => e.stopPropagation()}>
                     <div className="modal-header">
-                        <h4 className="modal-title">Añadir Cliente</h4>
+                        <h4 className="modal-title">{check ? "Editar Cliente" : "Añadir Cliente"}</h4>
                     </div>
                     <form onSubmit={check ? handleSubmit(submitUpdateClient) : handleSubmit(submitClient)} id="client">
                         <div className="modal-body">

@@ -58,6 +58,7 @@ const Offers = () => {
                         <div className="form-control">
                             <label className="me-3">Cliente:</label>
                             <select name="id" className="selector" onChange={e => setIdForm(e.target.value)}>
+                            <option>Selecciona</option>
                                 {clients && clients.filter(client => client.deletedAt === null).map(client => (
                                     <option value={client.id} key={client.id}>{client.companyName}</option>
                                 ))}
